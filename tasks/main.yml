@@ -1,0 +1,14 @@
+---
+# tasks file for postgresql
+- name: Install postgresql
+  package:
+    name: postgresql-server
+    state: present
+
+- name: Initial cluster setup
+  command: postgresql-setup initdb
+  args:
+    creates: /var/lib/pgsql/data/postgresql.conf
+
+- name: Configure service
+  service: name=postgresql enabled=yes state=started

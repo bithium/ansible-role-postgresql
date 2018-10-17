@@ -1,0 +1,11 @@
+# Molecule managed
+
+---
+package:
+  postgresql:
+    installed: true
+
+service:
+  postgresql:
+    enabled: true
+    running: true
