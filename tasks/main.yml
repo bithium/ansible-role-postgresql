@@ -6,8 +6,9 @@
     state: present
 
 - name: Initial cluster setup
-  command: postgresql-setup initdb
+  command: "{{postgresql_cluster_init['v' ~ ansible_distribution_major_version]}}"
   args:
+    warn: false
     creates: /var/lib/pgsql/data/postgresql.conf
 
 - name: Configure service

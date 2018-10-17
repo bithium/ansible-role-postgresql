@@ -1,2 +1,5 @@
 ---
 # defaults file for postgresql
+postgresql_cluster_init:
+  v6: "service postgresql initdb"
+  v7: "postgresql-setup initdb"

@@ -6,6 +6,8 @@ driver:
 lint:
   name: yamllint
 platforms:
+  - name: postgresql-centos-6
+    image: centos:6
   - name: postgresql-centos-7
     image: centos:7
     privileged: true
