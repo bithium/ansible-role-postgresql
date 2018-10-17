@@ -3,3 +3,7 @@
 postgresql_cluster_init:
   v6: "service postgresql initdb"
   v7: "postgresql-setup initdb"
+
+postgresql_package:
+  RedHat: postgresql-server
+  Debian: postgresql

@@ -2,7 +2,7 @@
 # tasks file for postgresql
 - name: Install postgresql
   package:
-    name: postgresql-server
+    name: "{{postgresql_package[ansible_os_family]}}"
     state: present
 
 - name: Initial cluster setup
@@ -10,6 +10,7 @@
   args:
     warn: false
     creates: /var/lib/pgsql/data/postgresql.conf
+  when: ansible_os_family == 'RedHat'
 
 - name: Configure service
   service: name=postgresql enabled=yes state=started
