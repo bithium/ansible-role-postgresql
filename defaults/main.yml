@@ -1,9 +1,28 @@
 ---
 # defaults file for postgresql
-postgresql_cluster_init:
-  v6: "service postgresql initdb"
-  v7: "postgresql-setup initdb"
 
-postgresql_package:
-  RedHat: postgresql-server
+postgresql_user: postgres
+postgresql_group: postgres
+
+postgresql_cluster_init:
+  RedHat: {
+    v6: "service postgresql initdb",
+    v7: "postgresql-setup initdb",
+  }
+
+postgresql_package_names:
   Debian: postgresql
+  RedHat: postgresql-server
+
+postgresql_cluster_names:
+  Debian: "{{postgresql_version}}/main"
+  RedHat: "data"
+
+postgresql_var_lib_names:
+  Debian: "postgresql"
+  RedHat: "pgsql"
+
+postgresql_config_dirs:
+  Debian: "/etc/postgresql/{{ postgresql_cluster_name }}"
+
+postgresql_service: postgresql

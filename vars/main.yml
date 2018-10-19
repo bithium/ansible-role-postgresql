@@ -1,2 +1,22 @@
 ---
 # vars file for postgresql
+
+postgresql_package: "{{postgresql_package_names[ansible_os_family]}}"
+
+postgresql_packages:
+  - "{{postgresql_package}}"
+
+postgresql_cluster_name: "{{postgresql_cluster_names[ansible_os_family]}}"
+
+postgresql_var_lib_name: "{{postgresql_var_lib_names[ansible_os_family]}}"
+
+# -------------------------------------------------------------------------------
+# FILE LOCATIONS
+# -------------------------------------------------------------------------------
+
+postgresql_data_dir: "/var/lib/{{postgresql_var_lib_name}}/{{postgresql_cluster_name}}"
+
+# Location of postgresql configuration files
+postgresql_config_dir: "{{postgresql_config_dirs[ansible_os_family] | default(postgresql_data_dir)}}"
+
+postgresql_config_file: "{{postgresql_config_dir}}/postgresql.conf"

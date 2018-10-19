@@ -2,15 +2,13 @@
 # tasks file for postgresql
 - name: Install postgresql
   package:
-    name: "{{postgresql_package[ansible_os_family]}}"
+    name: "{{postgresql_packages}}"
     state: present
 
-- name: Initial cluster setup
-  command: "{{postgresql_cluster_init['v' ~ ansible_distribution_major_version]}}"
-  args:
-    warn: false
-    creates: /var/lib/pgsql/data/postgresql.conf
-  when: ansible_os_family == 'RedHat'
+- include_tasks: "{{ansible_os_family | lower}}.yml"
 
-- name: Configure service
-  service: name=postgresql enabled=yes state=started
+- name: Enable and start postgresql service
+  service:
+    name: "{{postgresql_service}}"
+    enabled: true
+    state: started

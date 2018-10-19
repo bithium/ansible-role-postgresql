@@ -10,21 +10,26 @@ No special requirements; note that this role requires root access, so either run
 
     - hosts: database
       roles:
-        - role: geerlingguy.postgresql
+        - role: bithium.postgresql
           become: yes
 
 Role Variables
 --------------
 
-Available variables are listed below, along with default values (see `defaults/main.yml`):
+Available variables are listed below, along with default values (see `defaults/main.yml` and `vars/main.yml`):
 
  * Packages to install for each OS: `postgresql_package`
 
 ```yaml
 ---
-postgresql_package:
-  RedHat: postgresql-server
+postgresql_package_names:
   Debian: postgresql
+  RedHat: postgresql-server
+
+postgresql_package: "{{postgresql_package_names[ansible_os_family]}}"
+
+postgresql_packages:
+  - "{{postgresql_package}}"
 ```
 
  * PostgreSQL cluster initialization command (this is only used for RedHat based distributions):
@@ -32,26 +37,64 @@ postgresql_package:
 ```yaml
 ---
 postgresql_cluster_init:
-  v6: "service postgresql initdb"
-  v7: "postgresql-setup initdb"
+  RedHat: {
+    v6: "service postgresql initdb",
+    v7: "postgresql-setup initdb",
+  }
 ```
+
+ * Service name:
+
+        postgresql_service: postgresql
+
+ * Cluster name:
+
+```yaml
+---
+postgresql_cluster_names:
+  Debian: "{{postgresql_version}}/main"
+  RedHat: "data"
+
+postgresql_cluster_name: "{{postgresql_cluster_names[ansible_os_family]}}"
+```
+
+ * Cluster data folder:
+
+```yaml
+---
+postgresql_var_lib_names:
+  Debian: "postgresql"
+  RedHat: "pgsql"
+
+postgresql_var_lib_name: "{{postgresql_var_lib_names[ansible_os_family]}}"
+
+postgresql_data_dir: "/var/lib/{{postgresql_var_lib_name}}/{{postgresql_cluster_name}}"
+```
+
+ * Cluster configuration folder:
+
+```yaml
+---
+postgresql_config_dirs:
+  Debian: "/etc/postgresql/{{ postgresql_cluster_name }}"
+
+postgresql_config_dir: "{{postgresql_config_dirs[ansible_os_family] | default(postgresql_data_dir)}}"
+```
+
+ * Cluster configuration file:
+
+        postgresql_config_file: "{{postgresql_config_dir}}/postgresql.conf"
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in
-regards to parameters that may need to be set for other roles, or variables that
-are used from other roles.
-
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables
-passed in as parameters) is always nice for users too:
-
     - hosts: servers
+      become: true
       roles:
-         - { role: postgresql, x: 42 }
+         - role: postgresql
 
 License
 -------
