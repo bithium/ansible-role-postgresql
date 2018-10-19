@@ -58,9 +58,11 @@
         content: "{{ item.stdout }}"
         dest: "{{log_path}}/{{item.item | basename | splitext | first}}.log"
       with_items: "{{ test_results.results }}"
+      no_log: true
 
     - name: Fail when tests fail
       fail:
         msg: "Goss failed to validate"
       when: item.rc != 0
       with_items: "{{ test_results.results }}"
+      no_log: true
