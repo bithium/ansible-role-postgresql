@@ -1,5 +1,10 @@
 ---
 - name: Converge
   hosts: all
+  vars_files:
+    - goss.yml
   roles:
     - role: postgresql
+  tasks:
+    - name: Dump all host variables
+      template: src=config.yml.j2 dest={{goss_test_variables}}

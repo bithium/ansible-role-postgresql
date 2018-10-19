@@ -2,10 +2,19 @@
 
 ---
 package:
-  postgresql:
+{{- range .Vars.postgresql.packages -}}
+  {{.}}:
     installed: true
+{{end}}
 
 service:
-  postgresql:
+  {{.Vars.postgresql.service}}:
     enabled: true
     running: true
+
+file:
+  {{.Vars.postgresql.config_file}}:
+    exists: true
+    filetype: file
+    owner: {{.Vars.postgresql.user}}
+    group: {{.Vars.postgresql.group}}

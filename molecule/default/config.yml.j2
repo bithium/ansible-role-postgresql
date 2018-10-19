@@ -1,0 +1,6 @@
+postgresql:
+    user: {{postgresql_user | quote}}
+    group: {{postgresql_group | quote}}
+    packages: {{postgresql_packages | to_json}}
+    config_file: {{postgresql_config_file | quote}}
+    service: {{postgresql_service | quote}}
