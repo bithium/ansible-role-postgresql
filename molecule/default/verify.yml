@@ -30,20 +30,29 @@
     - name: Install Goss
       copy: src="/tmp/goss-linux-{{ goss_arch }}" dest="{{goss_dst}}" mode=0755
 
-    - name: Copy Goss tests to remote
-      copy:
-        src: "{{item}}"
-        dest: "{{goss_test_directory}}/{{item | basename}}"
+    - name: Register available tests
+      set_fact:
+        molecule_tests: >
+          {{ molecule_tests | default([]) | union([item | basename | splitext | first]) }}
       with_fileglob:
         - "{{test_path}}/test_*.yml"
 
+    - name: Copy Goss tests to remote
+      copy:
+        src: "{{test_path}}/{{item}}.yml"
+        dest: "{{goss_test_directory}}/{{item}}.yml"
+      with_items: "{{ molecule_tests }}"
+
     - name: Execute Goss tests
-      command: "{{ goss_dst }} --vars {{goss_test_variables}} -g {{ item | basename }} validate --format {{ goss_format }}"
+      shell: >
+        {{ goss_dst }} --vars {{goss_test_variables}}             \
+                       -g {{item}}.yml validate                   \
+                       --format {{ goss_format }} > {{item}}.log
       args:
         chdir: "{{goss_test_directory}}"
+      ignore_errors: true
       register: test_results
-      with_fileglob:
-        - "{{test_path}}/test_*.yml"
+      with_items: "{{ molecule_tests }}"
 
     - name: Setup log directory
       local_action: file
@@ -53,12 +62,11 @@
         mode: 0755
 
     - name: Save Goss test results
-      local_action: copy
-      args:
-        content: "{{ item.stdout }}"
-        dest: "{{log_path}}/{{item.item | basename | splitext | first}}.log"
-      with_items: "{{ test_results.results }}"
-      no_log: true
+      fetch:
+        src: "{{goss_test_directory}}/{{item}}.log"
+        dest: "{{log_path}}/"
+        flat: true
+      with_items: "{{molecule_tests}}"
 
     - name: Fail when tests fail
       fail:
