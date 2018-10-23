@@ -31,6 +31,12 @@
     - name: Install Goss
       copy: src="/tmp/goss-linux-{{ goss_arch }}" dest="{{goss_dst}}" mode=0755
 
+    - name: Patch Goss for Alpine
+      command: "sed -i 's/sysinit/default/' {{goss_dst}}"
+      args:
+        warn: false
+      when: ansible_os_family == 'Alpine'
+
     - name: Register available tests
       set_fact:
         molecule_tests: >

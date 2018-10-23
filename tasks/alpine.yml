@@ -1,0 +1,19 @@
+---
+# tasks file for postgresql (Alpine)
+- name: Get installed version
+  shell: apk info "{{postgresql_package}}" | head -1 | cut -f 2 -d -
+  changed_when: false
+  register: postgresql_version_query
+  when: postgresql_version is undefined
+
+- name: Set version fact
+  set_fact:
+    postgresql_version: "{{postgresql_version_query.stdout}}"
+  when: postgresql_version is undefined
+
+- name: Initial cluster setup
+  command: "{{postgresql_cluster_init[ansible_os_family]}}"
+  remote_user: "{{postgresql_user}}"
+  args:
+    warn: false
+    creates: "{{postgresql_config_file}}"
