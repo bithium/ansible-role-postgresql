@@ -95,9 +95,11 @@ postgresql_config_dir: "{{postgresql_config_dirs[ansible_os_family] | default(po
 
  * Cluster custom configuration options:
 
-   This is an hash with the options that will be placed in `postgresql_extra_config_file` as `key = value`.
+   This is an hash with the options that will be placed in `postgresql_extra_config_file` as `key = value`, e.g:
 
-        postgresql_extra_config_file: "{{undefined}}"
+        postgresql_config:
+           port: 4242
+           max_connections: 50
 
 Dependencies
 ------------
