@@ -26,6 +26,7 @@
       register: download_goss
       until: download_goss is succeeded
       retries: 3
+      run_once: true
 
     - name: Install Goss
       copy: src="/tmp/goss-linux-{{ goss_arch }}" dest="{{goss_dst}}" mode=0755

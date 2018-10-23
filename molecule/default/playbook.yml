@@ -1,10 +1,14 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    postgresql_config:
+      max_connections: 50
+      listen_addresses: "'*'"
   vars_files:
     - goss.yml
   roles:
     - role: postgresql
   tasks:
-    - name: Dump all host variables
+    - name: Dump host variables for role
       template: src=config.yml.j2 dest={{goss_test_variables}}

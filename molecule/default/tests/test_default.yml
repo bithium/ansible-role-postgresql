@@ -18,3 +18,25 @@ file:
     filetype: file
     owner: {{.Vars.postgresql.user}}
     group: {{.Vars.postgresql.group}}
+
+file:
+  {{.Vars.postgresql.extra_config_file}}:
+    exists: true
+    filetype: directory
+    owner: {{.Vars.postgresql.user}}
+    group: {{.Vars.postgresql.group}}
+
+file:
+  {{.Vars.postgresql.extra_config_file}}:
+    exists: true
+    filetype: file
+    contains:
+      - "max_connections = 50"
+      - "listen_addresses = '*'"
+    owner: {{.Vars.postgresql.user}}
+    group: {{.Vars.postgresql.group}}
+
+port:
+  tcp:5432:
+    # required attributes
+    listening: true

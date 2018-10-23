@@ -85,6 +85,20 @@ postgresql_config_dir: "{{postgresql_config_dirs[ansible_os_family] | default(po
 
         postgresql_config_file: "{{postgresql_config_dir}}/postgresql.conf"
 
+ * Cluster custom configuration folder:
+
+        postgresql_extra_config_dir: "{{postgresql_config_dir}}/conf.d"
+
+ * Cluster custom configuration file:
+
+        postgresql_extra_config_file: "{{postgresql_extra_config_dir}}/25_ansible.conf"
+
+ * Cluster custom configuration options:
+
+   This is an hash with the options that will be placed in `postgresql_extra_config_file` as `key = value`.
+
+        postgresql_extra_config_file: "{{undefined}}"
+
 Dependencies
 ------------
 

@@ -3,4 +3,5 @@ postgresql:
     group: {{postgresql_group | quote}}
     packages: {{postgresql_packages | to_json}}
     config_file: {{postgresql_config_file | quote}}
+    extra_config_file: {{postgresql_extra_config_file | quote}}
     service: {{postgresql_service | quote}}

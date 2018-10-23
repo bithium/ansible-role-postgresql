@@ -20,3 +20,15 @@ postgresql_data_dir: "/var/lib/{{postgresql_var_lib_name}}/{{postgresql_cluster_
 postgresql_config_dir: "{{postgresql_config_dirs[ansible_os_family] | default(postgresql_data_dir)}}"
 
 postgresql_config_file: "{{postgresql_config_dir}}/postgresql.conf"
+
+postgresql_extra_config_dir: "{{postgresql_config_dir}}/conf.d"
+
+postgresql_extra_config_file: "{{postgresql_extra_config_dir}}/25_ansible.conf"
+
+# -------------------------------------------------------------------------------
+# CUSTOM CONFIGURATIONS
+# -------------------------------------------------------------------------------
+
+# postgresql_config:
+#   port: 4242
+#   max_connections: 50

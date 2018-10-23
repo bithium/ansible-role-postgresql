@@ -7,6 +7,30 @@
 
 - include_tasks: "{{ansible_os_family | lower}}.yml"
 
+- name: Create conf.d
+  file:
+    path: "{{ postgresql_extra_config_dir }}"
+    state: directory
+    owner: "{{postgresql_user}}"
+    group: "{{postgresql_group}}"
+  become: true
+
+- name: Set conf.d include in postgresql.conf
+  lineinfile: line="include_dir 'conf.d'" dest="{{ postgresql_config_file }}"
+  when: postgresql_version is version_compare('9.3', '>=')
+
+- name: Include 25_ansible.conf in postgresql.conf
+  lineinfile: line="include 'conf.d/25_ansible.conf'" dest="{{ postgresql_config_file }}"
+  when: postgresql_version is version_compare('9.3', '<')
+
+- name: Create configuration file
+  template:
+    src: postgresql.conf.j2
+    dest: "{{postgresql_extra_config_file}}"
+    owner: "{{postgresql_user}}"
+    group: "{{postgresql_group}}"
+  notify: restart postgresql
+
 - name: Enable and start postgresql service
   service:
     name: "{{postgresql_service}}"
