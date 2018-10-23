@@ -116,6 +116,21 @@ postgresql_config_dir: "{{postgresql_config_dirs[ansible_os_family] | default(po
            - "host all all 168.192.1.0/24 password"
            - "host all all 168.192.1.0/24 md5"
 
+ * Cluster `pg_ident.conf` configuration file.
+
+        postgresql_pg_ident_conf_file: "{{postgresql_config_dir}}/pg_ident.conf"
+
+   **NOTE:** Changing this variable **WILL NOT** configure the cluster to use the given value as the
+   source for the `IDENT` functionality.
+
+ * Cluster custom `pg_ident.conf` configuration options:
+
+   This is an array of strings that will be appended to `postgresql_pg_ident_conf_file`, e.g.:
+
+        postgresql_pg_ident_config:
+          - "bithium   /^(.*)@bithium\\.com$      \\1"
+          - "bithium   /^(.*)@example\\.com$    guest"
+
 Dependencies
 ------------
 

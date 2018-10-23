@@ -27,6 +27,8 @@ postgresql_extra_config_file: "{{postgresql_extra_config_dir}}/25_ansible.conf"
 
 postgresql_pg_hba_conf_file: "{{postgresql_config_dir}}/pg_hba.conf"
 
+postgresql_pg_ident_conf_file: "{{postgresql_config_dir}}/pg_ident.conf"
+
 # -------------------------------------------------------------------------------
 # CUSTOM CONFIGURATIONS
 # -------------------------------------------------------------------------------
@@ -38,3 +40,7 @@ postgresql_pg_hba_conf_file: "{{postgresql_config_dir}}/pg_hba.conf"
 # postgresql_pg_hba_config:
 #   - "host all all 168.192.1.0/24 password"
 #   - "host all all 168.192.1.0/24 md5"
+
+# postgresql_pg_ident_config:
+#   - "bithium   /^(.*)@bithium\\.com$      \\1"
+#   - "bithium   /^(.*)@example\\.com$    guest"

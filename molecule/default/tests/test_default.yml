@@ -50,3 +50,13 @@ file:
       - "host all all 127.0.0.1/32 md5"
     owner: {{.Vars.postgresql.user}}
     group: {{.Vars.postgresql.group}}
+
+file:
+  {{.Vars.postgresql.pg_ident_conf_file}}:
+    exists: true
+    filetype: file
+    contains:
+      - "bithium   /^(.*)@bithium\\.com$      \\1"
+      - "bithium   /^(.*)@example\\.com$    guest"
+    owner: {{.Vars.postgresql.user}}
+    group: {{.Vars.postgresql.group}}
