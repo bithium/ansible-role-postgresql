@@ -20,6 +20,7 @@ platforms:
     image: centos:6
     volume_mounts:
       - "/mnt/mirrors/centos/7:/var/cache/yum"
+    command: sleep infinity
   - name: postgresql-centos-7
     image: centos:7
     privileged: true
@@ -31,14 +32,17 @@ platforms:
     image: debian:stable
     volumes:
       - "/mnt/mirrors/debian/stable:/var/cache/apt/archives"
+    command: sleep infinity
   - name: postgresql-debian-testing
     image: debian:testing
     volumes:
       - "/mnt/mirrors/debian/testing:/var/cache/apt/archives"
+    command: sleep infinity
   - name: postgresql-ubuntu-14.04
     image: ubuntu:14.04
     volumes:
       - "/mnt/mirrors/ubuntu/14.04:/var/cache/apt/archives"
+    command: sleep infinity
   - name: postgresql-ubuntu-16.04
     image: ubuntu:16.04
     privileged: true
@@ -50,6 +54,7 @@ platforms:
     image: ubuntu:18.04
     volumes:
       - "/mnt/mirrors/ubuntu/18.04:/var/cache/apt/archives"
+    command: sleep infinity
 provisioner:
   name: ansible
   lint:
