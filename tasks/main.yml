@@ -31,6 +31,12 @@
     group: "{{postgresql_group}}"
   notify: restart postgresql
 
+- name: Add custom entries to pg_hba.conf
+  blockinfile:
+    path: "{{postgresql_pg_hba_conf_file}}"
+    block: "{{postgresql_pg_hba_config | join('\n') }}"
+  when: postgresql_pg_hba_config is defined
+
 - name: Enable and start postgresql service
   service:
     name: "{{postgresql_service}}"

@@ -25,6 +25,8 @@ postgresql_extra_config_dir: "{{postgresql_config_dir}}/conf.d"
 
 postgresql_extra_config_file: "{{postgresql_extra_config_dir}}/25_ansible.conf"
 
+postgresql_pg_hba_conf_file: "{{postgresql_config_dir}}/pg_hba.conf"
+
 # -------------------------------------------------------------------------------
 # CUSTOM CONFIGURATIONS
 # -------------------------------------------------------------------------------
@@ -32,3 +34,7 @@ postgresql_extra_config_file: "{{postgresql_extra_config_dir}}/25_ansible.conf"
 # postgresql_config:
 #   port: 4242
 #   max_connections: 50
+
+# postgresql_pg_hba_config:
+#   - "host all all 168.192.1.0/24 password"
+#   - "host all all 168.192.1.0/24 md5"

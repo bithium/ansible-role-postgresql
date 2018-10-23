@@ -40,3 +40,13 @@ port:
   tcp:5432:
     # required attributes
     listening: true
+
+file:
+  {{.Vars.postgresql.pg_hba_conf_file}}:
+    exists: true
+    filetype: file
+    contains:
+      - "host all all 127.0.0.1/32 password"
+      - "host all all 127.0.0.1/32 md5"
+    owner: {{.Vars.postgresql.user}}
+    group: {{.Vars.postgresql.group}}

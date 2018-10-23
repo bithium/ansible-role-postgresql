@@ -101,6 +101,21 @@ postgresql_config_dir: "{{postgresql_config_dirs[ansible_os_family] | default(po
            port: 4242
            max_connections: 50
 
+ * Cluster `pg_hba.conf` configuration file.
+
+        postgresql_pg_hba_conf_file: "{{postgresql_config_dir}}/pg_hba.conf"
+
+   **NOTE:** Changing this variable **WILL NOT** configure the cluster to use the given value as the
+   source for the `HBA` functionality.
+
+ * Cluster custom `pg_hba.conf` configuration options:
+
+   This is an array of strings that will be appended to `postgresql_pg_hba_conf_file`, e.g.:
+
+        postgresql_pg_hba_config:
+           - "host all all 168.192.1.0/24 password"
+           - "host all all 168.192.1.0/24 md5"
+
 Dependencies
 ------------
 
