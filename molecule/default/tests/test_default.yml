@@ -2,7 +2,7 @@
 
 ---
 package:
-{{- range .Vars.postgresql.packages -}}
+{{range .Vars.postgresql.packages}}
   {{.}}:
     installed: true
 {{end}}
