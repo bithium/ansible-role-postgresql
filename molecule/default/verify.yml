@@ -1,17 +1,12 @@
 ---
-# This is an example playbook to execute goss tests.
-# Tests need distributed to the appropriate ansible host/groups
-# prior to execution by `goss validate`.
-
 - name: Verify
   hosts: all
-  become: true
-
   vars:
     root_path: "{{lookup('env', 'MOLECULE_PROJECT_DIRECTORY')}}"
     scenario: "{{ lookup('env', 'MOLECULE_SCENARIO_NAME') }}"
     log_path: "{{root_path}}/logs/molecule/{{scenario}}/{{inventory_hostname}}"
     test_path: "{{ lookup('env', 'MOLECULE_VERIFIER_TEST_DIRECTORY') }}"
+    test_workdir: "{{goss_test_directory}}/{{scenario}}"
 
   vars_files:
     - goss.yml
@@ -38,16 +33,30 @@
       when: ansible_os_family == 'Alpine'
 
     - name: Register available tests
-      set_fact:
+      local_action: set_fact
+      args:
         molecule_tests: >
           {{ molecule_tests | default([]) | union([item | basename | splitext | first]) }}
       with_fileglob:
         - "{{test_path}}/test_*.yml"
+      run_once: true
+
+    - name: Setup test directory
+      file:
+        path: "{{test_workdir}}"
+        state: directory
+        mode: 0755
 
     - name: Copy Goss tests to remote
       copy:
         src: "{{test_path}}/{{item}}.yml"
-        dest: "{{goss_test_directory}}/{{item}}.yml"
+        dest: "{{goss_test_directory}}/{{scenario}}/{{item}}.yml"
+      with_items: "{{ molecule_tests }}"
+
+    - name: Clean up previous logs
+      file:
+        path: "{{goss_test_directory}}/{{scenario}}/{{item}}.log"
+        state: absent
       with_items: "{{ molecule_tests }}"
 
     - name: Execute Goss tests
@@ -56,7 +65,7 @@
                        -g {{item}}.yml validate                   \
                        --format {{ goss_format }} > {{item}}.log
       args:
-        chdir: "{{goss_test_directory}}"
+        chdir: "{{test_workdir}}"
       ignore_errors: true
       register: test_results
       with_items: "{{ molecule_tests }}"
@@ -70,7 +79,7 @@
 
     - name: Save Goss test results
       fetch:
-        src: "{{goss_test_directory}}/{{item}}.log"
+        src: "{{test_workdir}}/{{item}}.log"
         dest: "{{log_path}}/"
         flat: true
       with_items: "{{molecule_tests}}"
@@ -78,6 +87,4 @@
     - name: Fail when tests fail
       fail:
         msg: "Goss failed to validate"
-      when: item.rc != 0
-      with_items: "{{ test_results.results }}"
-      no_log: true
+      when: true in test_results | json_query('results[*].failed')

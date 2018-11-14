@@ -1,13 +1,8 @@
 ---
 - name: Prepare
   hosts: all
-  become: true
 
   tasks:
-    - name: Configure Alpine openrc
-      script: ./alpine.sh
-      when: ansible_os_family == 'Alpine'
-
     - name: Setup local package cache
       file:
         src: /var/cache/apk
@@ -15,10 +10,8 @@
         state: link
       when: ansible_os_family == 'Alpine'
 
-    - name: Restart the container
-      local_action: docker_container
-      args:
-        name: "{{ansible_nodename}}"
-        state: started
-        restart: true
-      when: ansible_os_family == 'Alpine'
+    - name: Setup image for keeping downloaded packages
+      file:
+        path: /etc/apt/apt.conf.d/docker-clean
+        state: absent
+      when: ansible_os_family == 'Debian'
