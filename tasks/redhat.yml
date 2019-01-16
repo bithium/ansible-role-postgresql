@@ -3,11 +3,12 @@
 
 - name: Get installed version
   shell: rpm --query "{{postgresql_package}}" --queryformat "%{version}"
-  changed_when: false
   args:
     warn: false
   register: postgresql_version_query
   when: postgresql_version is undefined
+  check_mode: false
+  changed_when: false
 
 - name: Set version fact
   set_fact:
@@ -17,5 +18,5 @@
 - name: Initial cluster setup
   command: "{{postgresql_cluster_init[ansible_os_family]['v' ~ ansible_distribution_major_version]}}"
   args:
-    warn: false
     creates: "{{postgresql_config_file}}"
+    warn: false
