@@ -6,10 +6,10 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: postgresql-alpine-3.7
-    image: alpine:3.7
+  - name: postgresql-alpine-3.8
+    image: alpine:3.8
     volumes:
-      - "/mnt/mirrors/alpine/3.7:/var/cache/apk"
+      - "/mnt/mirrors/alpine/3.8:/var/cache/apk"
       - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
     tmpfs:
       - /tmp
@@ -18,10 +18,10 @@ platforms:
     capabilities:
       - SYS_ADMIN
     command: /sbin/init
-  - name: postgresql-alpine-3.8
-    image: alpine:3.8
+  - name: postgresql-alpine-3.9
+    image: alpine:3.9
     volumes:
-      - "/mnt/mirrors/alpine/3.8:/var/cache/apk"
+      - "/mnt/mirrors/alpine/3.9:/var/cache/apk"
       - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
     tmpfs:
       - /tmp
