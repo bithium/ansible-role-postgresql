@@ -10,56 +10,110 @@ platforms:
     image: alpine:3.7
     volumes:
       - "/mnt/mirrors/alpine/3.7:/var/cache/apk"
-    privileged: true
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+    capabilities:
+      - SYS_ADMIN
     command: /sbin/init
   - name: postgresql-alpine-3.8
     image: alpine:3.8
     volumes:
       - "/mnt/mirrors/alpine/3.8:/var/cache/apk"
-    privileged: true
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+    capabilities:
+      - SYS_ADMIN
     command: /sbin/init
   - name: postgresql-centos-6
     image: centos:6
     volume_mounts:
       - "/mnt/mirrors/centos/7:/var/cache/yum"
-    privileged: true
-    command: sleep infinity
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+    capabilities:
+      - SYS_ADMIN
+    command: /sbin/init
   - name: postgresql-centos-7
     image: centos:7
     volumes:
       - "/mnt/mirrors/centos/7:/var/cache/yum"
-    privileged: true
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+    capabilities:
+      - SYS_ADMIN
     command: /sbin/init
   - name: postgresql-debian-stable
     image: debian:stable
     volumes:
       - "/mnt/mirrors/debian/stable:/var/cache/apt/archives"
-    privileged: true
-    command: sleep infinity
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+    capabilities:
+      - SYS_ADMIN
+    command: /lib/systemd/systemd
   - name: postgresql-debian-testing
     image: debian:testing
     volumes:
       - "/mnt/mirrors/debian/testing:/var/cache/apt/archives"
-    privileged: true
-    command: sleep infinity
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+    capabilities:
+      - SYS_ADMIN
+    command: /lib/systemd/systemd
   - name: postgresql-ubuntu-14.04
     image: ubuntu:14.04
     volumes:
       - "/mnt/mirrors/ubuntu/14.04:/var/cache/apt/archives"
-    privileged: true
-    command: sleep infinity
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+    capabilities:
+      - SYS_ADMIN
+    command: /sbin/init
   - name: postgresql-ubuntu-16.04
     image: ubuntu:16.04
     volumes:
       - "/mnt/mirrors/ubuntu/16.04:/var/cache/apt/archives"
-    privileged: true
-    command: sleep infinity
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+    capabilities:
+      - SYS_ADMIN
+    command: /sbin/init
   - name: postgresql-ubuntu-18.04
     image: ubuntu:18.04
     volumes:
       - "/mnt/mirrors/ubuntu/18.04:/var/cache/apt/archives"
-    privileged: true
-    command: sleep infinity
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+    capabilities:
+      - SYS_ADMIN
+    command: /sbin/init
 provisioner:
   name: ansible
   lint:
