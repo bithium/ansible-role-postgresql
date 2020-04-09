@@ -2,9 +2,12 @@
 # tasks file for postgresql (Debian)
 
 - name: Get installed version
-  shell: dpkg-query -f '${Version}' --show {{postgresql_package}} | cut -f 1 -d +
+  shell: >
+    set -o pipefail &&
+    dpkg-query -f '${Version}' --show {{ postgresql_package }} | cut -f 1 -d +
   args:
     warn: false
+    executable: /bin/bash
   register: postgresql_version_query
   when: postgresql_version is undefined
   check_mode: false
@@ -12,5 +15,5 @@
 
 - name: Set version fact
   set_fact:
-    postgresql_version: "{{postgresql_version_query.stdout}}"
+    postgresql_version: "{{ postgresql_version_query.stdout }}"
   when: postgresql_version is undefined

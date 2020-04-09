@@ -2,7 +2,7 @@
 # tasks file for postgresql (RedHat)
 
 - name: Get installed version
-  shell: rpm --query "{{postgresql_package}}" --queryformat "%{version}"
+  shell: rpm --query "{{ postgresql_package }}" --queryformat "%{version}"
   args:
     warn: false
   register: postgresql_version_query
@@ -16,7 +16,7 @@
   when: postgresql_version is undefined
 
 - name: Initial cluster setup
-  command: "{{postgresql_cluster_init[ansible_os_family]['v' ~ ansible_distribution_major_version]}}"
+  command: "{{ postgresql_cluster_init[ansible_os_family]['v' ~ ansible_distribution_major_version] }}"
   args:
-    creates: "{{postgresql_config_file}}"
+    creates: "{{ postgresql_config_file }}"
     warn: false
