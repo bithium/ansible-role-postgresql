@@ -81,18 +81,6 @@ platforms:
     capabilities:
       - SYS_ADMIN
     command: /lib/systemd/systemd
-  - name: postgresql-ubuntu-14.04
-    image: ubuntu:14.04
-    volumes:
-      - "/mnt/mirrors/ubuntu/14.04:/var/cache/apt/archives"
-      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    tmpfs:
-      - /tmp
-      - /run
-      - /run/lock
-    capabilities:
-      - SYS_ADMIN
-    command: /sbin/init
   - name: postgresql-ubuntu-16.04
     image: ubuntu:16.04
     volumes:
