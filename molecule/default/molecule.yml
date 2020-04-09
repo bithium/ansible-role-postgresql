@@ -107,6 +107,9 @@ platforms:
     command: /sbin/init
 provisioner:
   name: ansible
+  config_options:
+    defaults:
+      interpreter_python: "/usr/bin/python"
   lint: |
     set -e
     yamllint .
