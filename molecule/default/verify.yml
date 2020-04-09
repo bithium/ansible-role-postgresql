@@ -4,8 +4,8 @@
   vars:
     root_path: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}"
     scenario: "{{ lookup('env', 'MOLECULE_SCENARIO_NAME') }}"
-    test_path: "{{ lookup('env', 'MOLECULE_VERIFIER_TEST_DIRECTORY') }}"
     log_path: "{{ root_path }}/logs/molecule/{{ scenario }}/{{ inventory_hostname }}"
+    test_path: "{{ lookup('env', 'MOLECULE_SCENARIO_DIRECTORY') }}/tests"
     test_workdir: "{{ goss_test_directory }}/{{ scenario }}"
 
   vars_files:
