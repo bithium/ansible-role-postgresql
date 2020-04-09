@@ -1,3 +1,9 @@
+# vim: ft=yaml
+# -*-YAML-*-
+---
+ignore: |
+  molecule/*/tests/
+
 extends: default
 
 rules:
@@ -8,6 +14,3 @@ rules:
     max-spaces-inside: 1
     level: error
   line-length: disable
-  # NOTE(retr0h): Templates no longer fail this lint rule.
-  #               Uncomment if running old Molecule templates.
-  # truthy: disable
