@@ -33,18 +33,6 @@ platforms:
     capabilities:
       - SYS_ADMIN
     command: /sbin/init
-  - name: postgresql-centos-6
-    image: centos:6
-    volume_mounts:
-      - "/mnt/mirrors/centos/7:/var/cache/yum"
-      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    tmpfs:
-      - /tmp
-      - /run
-      - /run/lock
-    capabilities:
-      - SYS_ADMIN
-    command: /sbin/init
   - name: postgresql-centos-7
     image: centos:7
     volumes:
