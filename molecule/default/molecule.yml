@@ -45,6 +45,18 @@ platforms:
     capabilities:
       - SYS_ADMIN
     command: /sbin/init
+  - name: postgresql-alpine-3.12
+    image: alpine:3.12
+    volumes:
+      - "/mnt/mirrors/alpine/3.12:/var/cache/apk"
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+    capabilities:
+      - SYS_ADMIN
+    command: /sbin/init
   - name: postgresql-centos-6
     image: centos:6
     volume_mounts:
