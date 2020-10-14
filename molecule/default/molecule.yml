@@ -95,9 +95,14 @@ platforms:
     command: /lib/systemd/systemd
 provisioner:
   name: ansible
+  # log: True
   config_options:
     defaults:
-      interpreter_python: "auto_silent"
+      interpreter_python: "/usr/bin/python3"
+  inventory:
+    host_vars:
+      postgresql-centos-7:
+        ansible_python_interpreter: "/usr/bin/python"
   lint: |
     set -e
     yamllint .
