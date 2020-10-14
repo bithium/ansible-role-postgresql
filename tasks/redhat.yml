@@ -15,6 +15,10 @@
     postgresql_version: "{{ postgresql_version_query.stdout }}"
   when: postgresql_version is undefined
 
+- name: Add proper locale
+  package: name=glibc-langpack-en
+  when: ansible_distribution_major_version is version("8", ">=")
+
 - name: Initial cluster setup
   command: "{{ postgresql_cluster_init[ansible_os_family]['v' ~ ansible_distribution_major_version] }}"
   args:

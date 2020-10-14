@@ -9,6 +9,7 @@ postgresql_cluster_init:
   RedHat: {
     v6: "service postgresql initdb",
     v7: "postgresql-setup initdb",
+    v8: "postgresql-setup --initdb",
   }
 
 postgresql_package_names:
