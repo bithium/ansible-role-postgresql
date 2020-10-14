@@ -9,18 +9,6 @@ lint: |
   ansible-lint
   flake8
 platforms:
-  - name: postgresql-alpine-3.9
-    image: alpine:3.9
-    volumes:
-      - "/mnt/mirrors/alpine/3.9:/var/cache/apk"
-      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    tmpfs:
-      - /tmp
-      - /run
-      - /run/lock
-    capabilities:
-      - SYS_ADMIN
-    command: /sbin/init
   - name: postgresql-alpine-3.11
     image: alpine:3.11
     volumes:
