@@ -51,6 +51,7 @@
       copy:
         src: "{{ test_path }}/{{ item }}.yml"
         dest: "{{ goss_test_directory }}/{{ scenario }}/{{ item }}.yml"
+        mode: 0644
       with_items: "{{ molecule_tests }}"
 
     - name: Clean up previous logs

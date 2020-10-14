@@ -21,4 +21,4 @@
 
   tasks:
     - name: Dump host variables for role
-      template: src=config.yml.j2 dest={{ goss_test_variables }}
+      template: src=config.yml.j2 dest={{ goss_test_variables }} mode=0644

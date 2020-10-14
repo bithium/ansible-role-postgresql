@@ -13,6 +13,7 @@
     state: directory
     owner: "{{ postgresql_user }}"
     group: "{{ postgresql_group }}"
+    mode: 0755
   become: true
 
 - name: Set conf.d include in postgresql.conf
@@ -29,6 +30,7 @@
     dest: "{{ postgresql_extra_config_file }}"
     owner: "{{ postgresql_user }}"
     group: "{{ postgresql_group }}"
+    mode: 0644
   notify: restart postgresql
 
 - name: Add custom entries to pg_hba.conf
