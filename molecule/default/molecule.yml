@@ -93,11 +93,23 @@ platforms:
     capabilities:
       - SYS_ADMIN
     command: /sbin/init
+  - name: postgresql-ubuntu-20.04
+    image: ubuntu:20.04
+    volumes:
+      - "/mnt/mirrors/ubuntu/20.04:/var/cache/apt/archives"
+      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+    capabilities:
+      - SYS_ADMIN
+    command: /lib/systemd/systemd
 provisioner:
   name: ansible
   config_options:
     defaults:
-      interpreter_python: "/usr/bin/python"
+      interpreter_python: "auto_silent"
   lint: |
     set -e
     yamllint .
