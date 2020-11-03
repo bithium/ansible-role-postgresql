@@ -2,7 +2,7 @@
 dependency:
   name: galaxy
 driver:
-  name: docker
+  name: podman
 lint: |
   set -e
   yamllint .
@@ -13,85 +13,36 @@ platforms:
     image: alpine:3.11
     volumes:
       - "/mnt/mirrors/alpine/3.11:/var/cache/apk"
-      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    tmpfs:
-      - /tmp
-      - /run
-      - /run/lock
-    capabilities:
-      - SYS_ADMIN
     command: /sbin/init
   - name: postgresql-alpine-3.12
     image: alpine:3.12
     volumes:
       - "/mnt/mirrors/alpine/3.12:/var/cache/apk"
-      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    tmpfs:
-      - /tmp
-      - /run
-      - /run/lock
-    capabilities:
-      - SYS_ADMIN
     command: /sbin/init
   - name: postgresql-centos-7
     image: centos:7
     volumes:
       - "/mnt/mirrors/centos/7:/var/cache/yum"
-      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    tmpfs:
-      - /tmp
-      - /run
-      - /run/lock
-    capabilities:
-      - SYS_ADMIN
     command: /sbin/init
   - name: postgresql-centos-8
     image: centos:8
     volumes:
       - "/mnt/mirrors/centos/8:/var/cache/yum"
-      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    tmpfs:
-      - /tmp
-      - /run
-      - /run/lock
-    capabilities:
-      - SYS_ADMIN
     command: /sbin/init
   - name: postgresql-debian-stable
     image: debian:stable
     volumes:
       - "/mnt/mirrors/debian/stable:/var/cache/apt/archives"
-      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    tmpfs:
-      - /tmp
-      - /run
-      - /run/lock
-    capabilities:
-      - SYS_ADMIN
     command: /lib/systemd/systemd
   - name: postgresql-ubuntu-18.04
     image: ubuntu:18.04
     volumes:
       - "/mnt/mirrors/ubuntu/18.04:/var/cache/apt/archives"
-      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    tmpfs:
-      - /tmp
-      - /run
-      - /run/lock
-    capabilities:
-      - SYS_ADMIN
     command: /sbin/init
   - name: postgresql-ubuntu-20.04
     image: ubuntu:20.04
     volumes:
       - "/mnt/mirrors/ubuntu/20.04:/var/cache/apt/archives"
-      - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
-    tmpfs:
-      - /tmp
-      - /run
-      - /run/lock
-    capabilities:
-      - SYS_ADMIN
     command: /lib/systemd/systemd
 provisioner:
   name: ansible

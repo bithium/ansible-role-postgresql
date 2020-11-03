@@ -20,5 +20,60 @@
     - role: postgresql
 
   tasks:
+    - name: Tweak systemd unit file.
+      block:
+        - name: Change service type
+          lineinfile:
+            path: /usr/lib/systemd/system/postgresql.service
+            regexp: '^Type='
+            line: 'Type=forking'
+
+        - name: Add Environment variable
+          lineinfile:
+            path: /usr/lib/systemd/system/postgresql.service
+            regexp: 'PGPORT='
+            line: 'Environment=PGPORT=5432'
+            insertafter: 'Environment=PGDATA'
+
+        - name: Replace `Start` command
+          lineinfile:
+            path: /usr/lib/systemd/system/postgresql.service
+            regexp: '^ExecStart='
+            line: 'ExecStart=/usr/bin/pg_ctl start -D ${PGDATA} -s -o "-p ${PGPORT}" -w -t 300'
+
+        - name: Replace `Reload` command
+          lineinfile:
+            path: /usr/lib/systemd/system/postgresql.service
+            regexp: '^ExecReload='
+            line: 'ExecReload=/usr/bin/pg_ctl reload -D ${PGDATA} -s'
+
+        - name: Add `Stop` command
+          lineinfile:
+            path: /usr/lib/systemd/system/postgresql.service
+            regexp: '^ExecStop='
+            line: 'ExecStop=/usr/bin/pg_ctl stop -D ${PGDATA} -s -m fast'
+            insertafter: 'ExecReload='
+
+        - name: Remove 'Kill*' configuration
+          lineinfile:
+            path: /usr/lib/systemd/system/postgresql.service
+            regexp: '^Kill'
+            state: absent
+
+        - name: Tweak 'Timeout' directive
+          lineinfile:
+            path: /usr/lib/systemd/system/postgresql.service
+            regexp: '^TimeoutSec='
+            line: 'TimeoutSec=300'
+
+        - name: Reload systemd daemon
+          systemd:
+            daemon_reload: true
+
+      when: >-
+        ansible_connection == 'podman' and
+        ansible_distribution == 'CentOS' and
+        ansible_distribution_major_version == '8'
+
     - name: Dump host variables for role
       template: src=config.yml.j2 dest={{ goss_test_variables }} mode=0644
